@@ -63,16 +63,18 @@ if uploaded_file:
     st.metric("Items with GOW > 0", f"{num_items_with_gow}/{total_rows}")
 
     # Download button
-    st.subheader("⬇️ Download Updated File")
-    output = io.BytesIO()
-    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        df.to_excel(writer, index=False, sheet_name='Updated BOM')
-        writer.save()
-    st.download_button(
-        label="Download as Excel",
-        data=output.getvalue(),
-        file_name="Updated_BOM_with_GOW.xlsx",
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    )
 
-    st.success("Done calculating! Scroll to explore data or apply filters.")
+st.subheader("⬇️ Download Updated File")
+output = io.BytesIO()
+with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+    df.to_excel(writer, index=False, sheet_name='Updated BOM')
+output.seek(0)
+
+st.download_button(
+    label="Download as Excel",
+    data=output.getvalue(),
+    file_name="Updated_BOM_with_GOW.xlsx",
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+)
+
+st.success("Done calculating! Scroll to explore data or apply filters.")
